@@ -167,10 +167,10 @@ def download_playlist(playlist_id: str):
   print(f"  Found {len(entries)} approved songs in playlist '{playlist_id}'")
   print()
 
-  print(f"Preparing to download songs for playlist '{playlist_id}'")
-  if os.path.exists(f"./playlist/{playlist_id}"):
-    shutil.rmtree(f"./playlist/{playlist_id}")
-  print()
+  # print(f"Preparing to download songs for playlist '{playlist_id}'")
+  # if os.path.exists(f"./playlist/{playlist_id}"):
+  #   shutil.rmtree(f"./playlist/{playlist_id}")
+  # print()
 
   yt = YTMusic()
   for i, entry in enumerate(entries):
@@ -239,18 +239,22 @@ def convert_playlist(playlist_id: str):
 
   for i, file in enumerate(files):
     print(f"Resolving {i+1} of {len(files)}...")
-    try:
-      ipath = f"./playlist/{playlist_id}/{file}"
-      opath = f"./playlist/{playlist_id}/{file.replace('.m4a', '.ogg')}"
-      print(f"  Converting {ipath}...")
-      (
-        ffmpeg
-          .input (ipath)
-          .output(opath)
-          .run(quiet=True)
-      )
-    except:
-      print("  Failed to convert, skipping...")
+    ipath = f"./playlist/{playlist_id}/{file}"
+    opath = f"./playlist/{playlist_id}/{file.replace('.m4a', '.ogg')}"
+  
+    if os.path.exists(opath):
+      print(f"  {ipath} already exists, skipping...")
+    else:
+      try:
+        print(f"  Converting {ipath}...")
+        (
+          ffmpeg
+            .input (ipath)
+            .output(opath)
+            .run(quiet=True)
+        )
+      except:
+        print("  Failed to convert, skipping...")
 
   clear()
   print(f"Finished converting songs for playlist '{playlist_id}'")
