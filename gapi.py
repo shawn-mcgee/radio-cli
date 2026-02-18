@@ -2,8 +2,6 @@ import json
 import requests
 from urllib.parse import quote
 
-from song import Song
-
 GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtfTgh_VX95AR3zYPokQODNzIwxfUf00uWS1wWS5hmCxCAxTtzbbk6PgCe9kPWWO8g/exec"
 
 def wrap(content: dict) -> str:
