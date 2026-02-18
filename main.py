@@ -6,9 +6,9 @@ import pygame
 import random
 
 from song import Song
-from ytmusicapi import YTMusic
-from  pytubefix import YouTube
-from pytubefix.cli import on_progress
+from ytmusicapi     import YTMusic
+from  pytubefix     import YouTube
+from  pytubefix.cli import on_progress
 
 pygame.mixer.init()
 
