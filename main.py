@@ -15,8 +15,7 @@ pygame.mixer.init()
 playlist_ids = [ ]
 
 def clear():
-  os.system("clear")
-  print("\n")
+  os.system("cls" if os.name == "nt" else "clear")
 
 def refresh():
   global playlist_ids
@@ -59,7 +58,7 @@ def menu():
           download_and_play(playlist_ids[choice-1])
         else:
           input("Invalid choice. Press Enter to continue...")
-      except Exception:
+      except ValueError:
         input("Invalid choice. Press Enter to continue...")
 
 def download_and_play(playlist_id: str):
