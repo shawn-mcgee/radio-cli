@@ -59,16 +59,3 @@ def get_playlist(playlist_id: str):
     )
 
     return unwrap(response)
-
-def is_approved(s: str):
-    return s.strip().lower() == 'approved'
-
-def is_rejected(s: str):
-    return s.strip().lower() == 'rejected'
-
-def get_playlist_songs(playlist_id: str):
-    return [Song(result['title'], result['artist']) for result in get_playlist(playlist_id)]
-
-def get_approved_songs(playlist_id: str):
-    return [Song(result['title'], result['artist']) for result in get_playlist(playlist_id) if is_approved(result['status'])]
-        
