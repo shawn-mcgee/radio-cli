@@ -1,5 +1,4 @@
 import os
-import gapi
 import random
 import ffmpeg
 import pygame
@@ -8,13 +7,73 @@ from ytmusicapi    import YTMusic
 from pytubefix     import YouTube
 from pytubefix.cli import on_progress
 
+import json
+import requests
+from urllib.parse import quote
+
+GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwtfTgh_VX95AR3zYPokQODNzIwxfUf00uWS1wWS5hmCxCAxTtzbbk6PgCe9kPWWO8g/exec"
+
+def wrap(content: dict) -> str:
+    return quote(json.dumps(content))
+
+
+def unwrap(response: requests.Response):
+    try:
+        data = response.json()
+    except ValueError:
+        raise Exception(f"[unwrap] Failed to parse JSON: {response.text}")
+
+    if data and data.get("ok") is True:
+        return data.get("content")
+    elif data and data.get("ok") is False:
+        raise Exception(f"[unwrap] {data.get('error')}")
+    else:
+        raise Exception(f"[unwrap] Failed to unwrap response '{data}'")
+
+
+def get_playlist_ids():
+    payload = {
+        "action": "getPlaylistIds"
+    }
+
+    q = f"{GOOGLE_APPS_SCRIPT_URL}?q={wrap(payload)}"
+
+    response = requests.post(
+        q,
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        allow_redirects=True
+    )
+
+    return unwrap(response)
+
+
+def get_playlist(playlist_id: str):
+    payload = {
+        "action": "getPlaylist",
+        "playlistId": playlist_id
+    }
+
+    q = f"{GOOGLE_APPS_SCRIPT_URL}?q={wrap(payload)}"
+
+    response = requests.post(
+        q,
+        headers={
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        allow_redirects=True
+    )
+
+    return unwrap(response)
+
 
 def clear():
   os.system("cls" if os.name == "nt" else "clear")
 
 clear()
 print("Fetching playlists...")
-playlist_ids = gapi.get_playlist_ids()
+playlist_ids = get_playlist_ids()
 
 clear()
 print("Choose Playlist")
@@ -44,7 +103,7 @@ def is_approved(song: dict):
     return False
 
 print("Fetching approved songs...")
-playlist = [song for song in gapi.get_playlist(playlist_id) if is_approved(song)]
+playlist = [song for song in get_playlist(playlist_id) if is_approved(song)]
 
 if len(playlist) == 0:
   print("No songs found, quitting...")
@@ -55,7 +114,7 @@ pygame.mixer.init()
 while True:
   random.shuffle(playlist)
 
-  for i, song in enumerate(playlist):    
+  for i, song in enumerate(playlist):
     title  = song["title" ].strip()
     artist = song["artist"].strip()
 

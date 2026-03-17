@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ### Usage
 
 ```bash
-python radio.py
+python cli.py
 ```
 
 > [!NOTE]
