@@ -15,3 +15,9 @@ python cli.py
 
 > [!NOTE]
 > `main.py` is the old entry point, but remains available for testing purposes. It is recommended to use `radio.py` instead.
+
+### Build
+
+```bash
+pyinstaller --one-file --collect-data ytmusicapi radio-gui.py
+```
