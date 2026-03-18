@@ -19,5 +19,5 @@ python cli.py
 ### Build
 
 ```bash
-pyinstaller --one-file --collect-data ytmusicapi radio-gui.py
+pyinstaller --onefile --noconsole --collect-data ytmusicapi radio-gui.py
 ```
