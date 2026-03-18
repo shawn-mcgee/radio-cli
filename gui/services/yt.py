@@ -14,7 +14,8 @@ def resolve_video_id(song: Song):
     return Result.error(f"[yt.resolve_video_id] Song '{song}' is not approved")
   
   yt = YTMusic()
-  results = yt.search(f"{song}".strip(), filter="songs")
+  query = f"{song.artist} {song.title}".strip()
+  results = yt.search(query, filter="songs")
 
   if len(results) == 0:
     return Result.error(f"[yt.resolve_video_id] No results for '{song}'")
