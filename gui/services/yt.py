@@ -61,14 +61,3 @@ def convert_audio(video_id: str):
     except:
       return Result.error(f"[yt.convert_video] Unable to convert './radio/{video_id}.m4a'")
     return Result.ok()
-  
-def playback_audio(video_id: str):
-  try:
-    pygame.mixer.music.load(f"./radio/{video_id}.ogg")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():
-      pygame.time.delay(100)
-  except:
-    return Result.error(f"[audio.play] Unable to play './radio/{video_id}.ogg'")  
-  
-  return Result.ok()
