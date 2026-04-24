@@ -3,11 +3,8 @@ from gui.types.song   import Song
 
 from ytmusicapi import YTMusic
 from pytubefix  import YouTube
-import pygame
 import ffmpeg
 import os
-
-pygame.mixer.init()
 
 def resolve_video_id(song: Song):
   if not song.is_approved():
